@@ -1,0 +1,5959 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Kimai - API Docs",
+    "description": "JSON API for the Kimai time-tracking software: [API documentation](https://www.kimai.org/documentation/rest-api.html), [Swagger definition file](doc.json)\n",
+    "version": "0.6"
+  },
+  "paths": {
+    "/api/activities/{id}/meta": {
+      "patch": {
+        "summary": "Sets the value of a meta-field for an existing activity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Activity record ID to set the meta-field value for",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "required": [
+                "name",
+                "value"
+              ],
+              "properties": {
+                "name": {
+                  "description": "The meta-field name",
+                  "type": "string"
+                },
+                "value": {
+                  "description": "The meta-field value",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sets the value of an existing/configured meta-field. You cannot create unknown meta-fields, if the given name is not a configured meta-field, this will return an exception.",
+            "schema": {
+              "$ref": "#/definitions/ActivityEntity"
+            }
+          }
+        },
+        "tags": [
+          "Activity"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/activities": {
+      "get": {
+        "summary": "Returns a collection of activities",
+        "parameters": [
+          {
+            "name": "project",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Project ID to filter activities",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "projects",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Comma separated list of project IDs to filter activities",
+            "type": "string",
+            "pattern": "[\\d|,]+"
+          },
+          {
+            "name": "visible",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Visibility status to filter activities. Allowed values: 1=visible, 2=hidden, 3=all (default: 1)",
+            "type": "string",
+            "pattern": "1|2|3"
+          },
+          {
+            "name": "globals",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Use if you want to fetch only global activities. Allowed values: true (default: false)",
+            "type": "string",
+            "pattern": "true"
+          },
+          {
+            "name": "globalsFirst",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Deprecated parameter, value is not used any more",
+            "type": "string",
+            "pattern": "true|false"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The field by which results will be ordered. Allowed values: id, name, project (default: name)",
+            "type": "string",
+            "pattern": "id|name|project"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The result order. Allowed values: ASC, DESC (default: ASC)",
+            "type": "string",
+            "pattern": "ASC|DESC"
+          },
+          {
+            "name": "term",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Free search term",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of activity entities",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/ActivityCollection"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Activity"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Creates a new activity",
+        "description": "Creates a new activity and returns it afterwards",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ActivityEditForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created activity",
+            "schema": {
+              "$ref": "#/definitions/ActivityEntity"
+            }
+          }
+        },
+        "tags": [
+          "Activity"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/activities/{id}": {
+      "get": {
+        "summary": "Returns one activity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Activity ID to fetch",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns one activity entity",
+            "schema": {
+              "$ref": "#/definitions/ActivityEntity"
+            }
+          }
+        },
+        "tags": [
+          "Activity"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update an existing activity",
+        "description": "Update an existing activity, you can pass all or just a subset of all attributes",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ActivityEditForm"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Activity ID to update",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated activity",
+            "schema": {
+              "$ref": "#/definitions/ActivityEntity"
+            }
+          }
+        },
+        "tags": [
+          "Activity"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/activities/{id}/rates": {
+      "get": {
+        "summary": "Returns a collection of all rates for one activity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The activity whose rates will be returned",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of activity rate entities",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/ActivityRate"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Activity"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Adds a new rate to an activity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The activity to add the rate for",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ActivityRateForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created rate",
+            "schema": {
+              "$ref": "#/definitions/ActivityRate"
+            }
+          }
+        },
+        "tags": [
+          "Activity"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/activities/{id}/rates/{rateId}": {
+      "delete": {
+        "summary": "Deletes one rate for an activity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The activity whose rate will be removed",
+            "type": "integer"
+          },
+          {
+            "name": "rateId",
+            "in": "path",
+            "required": true,
+            "description": "The rate to remove",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns no content: 204 on successful delete"
+          }
+        },
+        "tags": [
+          "Activity"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/config/i18n": {
+      "get": {
+        "summary": "Returns the user specific locale configuration",
+        "responses": {
+          "200": {
+            "description": "Returns the locale specific configurations for this user",
+            "schema": {
+              "$ref": "#/definitions/I18nConfig"
+            }
+          }
+        },
+        "tags": [
+          "Default"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/config/timesheet": {
+      "get": {
+        "summary": "Returns the timesheet configuration",
+        "responses": {
+          "200": {
+            "description": "Returns the instance specific timesheet configuration",
+            "schema": {
+              "$ref": "#/definitions/TimesheetConfig"
+            }
+          }
+        },
+        "tags": [
+          "Default"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/customers/{id}/meta": {
+      "patch": {
+        "summary": "Sets the value of a meta-field for an existing customer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Customer record ID to set the meta-field value for",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "required": [
+                "name",
+                "value"
+              ],
+              "properties": {
+                "name": {
+                  "description": "The meta-field name",
+                  "type": "string"
+                },
+                "value": {
+                  "description": "The meta-field value",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sets the value of an existing/configured meta-field. You cannot create unknown meta-fields, if the given name is not a configured meta-field, this will return an exception.",
+            "schema": {
+              "$ref": "#/definitions/CustomerEntity"
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/customers": {
+      "get": {
+        "summary": "Returns a collection of customers",
+        "parameters": [
+          {
+            "name": "visible",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Visibility status to filter activities (1=visible, 2=hidden, 3=both)",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The result order. Allowed values: ASC, DESC (default: ASC)",
+            "type": "string",
+            "pattern": "ASC|DESC"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The field by which results will be ordered. Allowed values: id, name (default: name)",
+            "type": "string",
+            "pattern": "id|name"
+          },
+          {
+            "name": "term",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Free search term",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of customer entities",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/CustomerCollection"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Creates a new customer",
+        "description": "Creates a new customer and returns it afterwards",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CustomerEditForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created customer",
+            "schema": {
+              "$ref": "#/definitions/CustomerEntity"
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/customers/{id}": {
+      "get": {
+        "summary": "Returns one customer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns one customer entity",
+            "schema": {
+              "$ref": "#/definitions/CustomerEntity"
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update an existing customer",
+        "description": "Update an existing customer, you can pass all or just a subset of all attributes",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CustomerEditForm"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Customer ID to update",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated customer",
+            "schema": {
+              "$ref": "#/definitions/CustomerEntity"
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/customers/{id}/rates": {
+      "get": {
+        "summary": "Returns a collection of all rates for one customer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The customer whose rates will be returned",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of customer rate entities",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/CustomerRate"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Adds a new rate to a customer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The customer to add the rate for",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CustomerRateForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created rate",
+            "schema": {
+              "$ref": "#/definitions/CustomerRate"
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/customers/{id}/rates/{rateId}": {
+      "delete": {
+        "summary": "Deletes one rate for an customer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The customer whose rate will be removed",
+            "type": "integer"
+          },
+          {
+            "name": "rateId",
+            "in": "path",
+            "required": true,
+            "description": "The rate to remove",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns no content: 204 on successful delete"
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/projects/{id}/meta": {
+      "patch": {
+        "summary": "Sets the value of a meta-field for an existing project",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Project record ID to set the meta-field value for",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "required": [
+                "name",
+                "value"
+              ],
+              "properties": {
+                "name": {
+                  "description": "The meta-field name",
+                  "type": "string"
+                },
+                "value": {
+                  "description": "The meta-field value",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sets the value of an existing/configured meta-field. You cannot create unknown meta-fields, if the given name is not a configured meta-field, this will return an exception.",
+            "schema": {
+              "$ref": "#/definitions/ProjectEntity"
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/projects": {
+      "get": {
+        "summary": "Returns a collection of projects.",
+        "parameters": [
+          {
+            "name": "customer",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Customer ID to filter projects",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "customers",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Comma separated list of customer IDs to filter projects",
+            "type": "string",
+            "pattern": "[\\d|,]+"
+          },
+          {
+            "name": "visible",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Visibility status to filter projects. Allowed values: 1=visible, 2=hidden, 3=both (default: 1)",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Only projects that started before this date will be included. Allowed format: HTML5 (default: now, if end is also empty)",
+            "type": "string",
+            "format": "DateTime"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Only projects that ended after this date will be included. Allowed format: HTML5 (default: now, if start is also empty)",
+            "type": "string",
+            "format": "DateTime"
+          },
+          {
+            "name": "ignoreDates",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "If set, start and end are completely ignored. Allowed values: 1 (default: off)",
+            "type": "string",
+            "pattern": "1"
+          },
+          {
+            "name": "globalActivities",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "If given, filters projects by their 'global activity' support. Allowed values: 1 (supports global activities) and 0 (without global activities) (default: all)",
+            "type": "string",
+            "pattern": "0|1"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The result order. Allowed values: ASC, DESC (default: ASC)",
+            "type": "string",
+            "pattern": "ASC|DESC"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The field by which results will be ordered. Allowed values: id, name, customer (default: name)",
+            "type": "string",
+            "pattern": "id|name|customer"
+          },
+          {
+            "name": "term",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Free search term",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of project entities",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/ProjectCollection"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Creates a new project",
+        "description": "Creates a new project and returns it afterwards",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectEditForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created project",
+            "schema": {
+              "$ref": "#/definitions/ProjectEntity"
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/projects/{id}": {
+      "get": {
+        "summary": "Returns one project",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns one project entity",
+            "schema": {
+              "$ref": "#/definitions/ProjectEntity"
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update an existing project",
+        "description": "Update an existing project, you can pass all or just a subset of all attributes",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectEditForm"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Project ID to update",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated project",
+            "schema": {
+              "$ref": "#/definitions/ProjectEntity"
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/projects/{id}/rates": {
+      "get": {
+        "summary": "Returns a collection of all rates for one project",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The project whose rates will be returned",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of project rate entities",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/ProjectRate"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Adds a new rate to an project",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The project to add the rate for",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectRateForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created rate",
+            "schema": {
+              "$ref": "#/definitions/ProjectRate"
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/projects/{id}/rates/{rateId}": {
+      "delete": {
+        "summary": "Deletes one rate for an project",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The project whose rate will be removed",
+            "type": "integer"
+          },
+          {
+            "name": "rateId",
+            "in": "path",
+            "required": true,
+            "description": "The rate to remove",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns no content: 204 on successful delete"
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/ping": {
+      "get": {
+        "summary": "A testing route for the API",
+        "responses": {
+          "200": {
+            "description": "A simple route that returns a 'pong', which you can use for testing the API",
+            "examples": [
+              "{'message': 'pong'}"
+            ]
+          }
+        },
+        "tags": [
+          "Default"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/version": {
+      "get": {
+        "summary": "Returns information about the Kimai release",
+        "responses": {
+          "200": {
+            "description": "Returns version information about the current release",
+            "schema": {
+              "$ref": "#/definitions/Version"
+            }
+          }
+        },
+        "tags": [
+          "Default"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/plugins": {
+      "get": {
+        "summary": "Returns information about installed Plugins",
+        "responses": {
+          "200": {
+            "description": "Returns a list of plugin names and versions",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Plugin"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Default"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/tags": {
+      "get": {
+        "summary": "Fetch all existing tags",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Search term to filter tag list",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the collection of all existing tags as string array",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Tag"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Creates a new tag",
+        "description": "Creates a new tag and returns it afterwards",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TagEditForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created tag",
+            "schema": {
+              "$ref": "#/definitions/TagEntity"
+            }
+          }
+        },
+        "tags": [
+          "Tag"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/tags/{id}": {
+      "delete": {
+        "summary": "Delete a tag",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Tag ID to delete",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "HTTP code 204 for a successful delete"
+          }
+        },
+        "tags": [
+          "Tag"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/teams": {
+      "get": {
+        "summary": "Fetch all existing teams",
+        "responses": {
+          "200": {
+            "description": "Returns the collection of all existing teams",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/TeamCollection"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Creates a new team",
+        "description": "Creates a new team and returns it afterwards",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TeamEditForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created team",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/teams/{id}": {
+      "get": {
+        "summary": "Returns one team",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns one team entity",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update an existing team",
+        "description": "Update an existing team, you can pass all or just a subset of all attributes (passing members will replace all existing ones)",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TeamEditForm"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Team ID to update",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated team",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete a team",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Team ID to delete",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete one team"
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/teams/{id}/members/{userId}": {
+      "post": {
+        "summary": "Add a new member to a team",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The team which will receive the new member",
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "The team member to add (User ID)",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Adds a new user to a team.",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Removes a member from the team",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The team from which the member will be removed",
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "The team member to remove (User ID)",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removes a user from the team. The teamlead cannot be removed.",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/teams/{id}/customers/{customerId}": {
+      "post": {
+        "summary": "Grant the team access to a customer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The team that is granted access",
+            "type": "integer"
+          },
+          {
+            "name": "customerId",
+            "in": "path",
+            "required": true,
+            "description": "The customer to grant acecess to (Customer ID)",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Adds a new customer to a team.",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Revokes access for a customer from a team",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The team whose permission will be revoked",
+            "type": "integer"
+          },
+          {
+            "name": "customerId",
+            "in": "path",
+            "required": true,
+            "description": "The customer to remove (Customer ID)",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removes a customer from the team.",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/teams/{id}/projects/{projectId}": {
+      "post": {
+        "summary": "Grant the team access to a project",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The team that is granted access",
+            "type": "integer"
+          },
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "description": "The project to grant acecess to (Project ID)",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Adds a new project to a team.",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Revokes access for a project from a team",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The team whose permission will be revoked",
+            "type": "integer"
+          },
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "description": "The project to remove (Project ID)",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removes a project from the team.",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/teams/{id}/activities/{activityId}": {
+      "post": {
+        "summary": "Grant the team access to an activity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The team that is granted access",
+            "type": "integer"
+          },
+          {
+            "name": "activityId",
+            "in": "path",
+            "required": true,
+            "description": "The activity to grant acecess to (Activity ID)",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Adds a new activity to a team.",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Revokes access for an activity from a team",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The team whose permission will be revoked",
+            "type": "integer"
+          },
+          {
+            "name": "activityId",
+            "in": "path",
+            "required": true,
+            "description": "The activity to remove (Activity ID)",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removes a activity from the team.",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "tags": [
+          "Team"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/timesheets/recent": {
+      "get": {
+        "summary": "Returns the collection of recent user activities",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "User ID to filter timesheets. Needs permission 'view_other_timesheet', pass 'all' to fetch data for all user (default: current user)",
+            "type": "string",
+            "pattern": "\\d+|all"
+          },
+          {
+            "name": "begin",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Only records after this date will be included. Default: today - 1 year (format: HTML5)",
+            "type": "string",
+            "format": "DateTime"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The amount of entries (default: 10)",
+            "type": "string",
+            "pattern": "\\d+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the collection of recent user activities (always the latest entry of a unique working set grouped by customer, project and activity)",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/TimesheetCollectionExpanded"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/timesheets/active": {
+      "get": {
+        "summary": "Returns the collection of active timesheet records",
+        "responses": {
+          "200": {
+            "description": "Returns the collection of active timesheet records for the current user",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/TimesheetCollectionExpanded"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/timesheets/{id}/stop": {
+      "patch": {
+        "summary": "Stops an active timesheet record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Timesheet record ID to stop",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stops an active timesheet record and returns it afterwards.",
+            "schema": {
+              "$ref": "#/definitions/TimesheetEntity"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/timesheets/{id}/restart": {
+      "patch": {
+        "summary": "Restarts a previously stopped timesheet record for the current user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Timesheet record ID to restart",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "properties": {
+                "copy": {
+                  "description": "Whether data should be copied to the new entry. Allowed values: all, tags (deprecated), rates (deprecated), description (deprecated), meta (deprecated) (default: nothing is copied)",
+                  "type": "string",
+                  "pattern": "all|tags|rates|meta|description"
+                },
+                "begin": {
+                  "description": "Changes the restart date to the given one (default: now)",
+                  "type": "string",
+                  "format": "DateTime"
+                }
+              },
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restarts a timesheet record for the same customer, project, activity combination. The current user will be the owner of the new record. Kimai tries to stop running records, which is expected to fail depending on the configured rules. Data will be copied from the original record if requested.",
+            "schema": {
+              "$ref": "#/definitions/TimesheetEntity"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/timesheets/{id}/duplicate": {
+      "patch": {
+        "summary": "Duplicates an existing timesheet record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Timesheet record ID to duplicate",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Duplicates a timesheet record, resetting the export state only.",
+            "schema": {
+              "$ref": "#/definitions/TimesheetEntity"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/timesheets/{id}/export": {
+      "patch": {
+        "summary": "Switch the export state of a timesheet record to (un-)lock it",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Timesheet record ID to switch export state",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Switches the exported state on the record and therefor locks / unlocks it for further updates. Needs edit_export_*_timesheet permission.",
+            "schema": {
+              "$ref": "#/definitions/TimesheetEntity"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/timesheets/{id}/meta": {
+      "patch": {
+        "summary": "Sets the value of a meta-field for an existing timesheet.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Timesheet record ID to set the meta-field value for",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "required": [
+                "name",
+                "value"
+              ],
+              "properties": {
+                "name": {
+                  "description": "The meta-field name",
+                  "type": "string"
+                },
+                "value": {
+                  "description": "The meta-field value",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sets the value of an existing/configured meta-field. You cannot create unknown meta-fields, if the given name is not a configured meta-field, this will return an exception.",
+            "schema": {
+              "$ref": "#/definitions/TimesheetEntity"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/timesheets": {
+      "get": {
+        "summary": "Returns a collection of timesheet records",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "User ID to filter timesheets. Needs permission 'view_other_timesheet', pass 'all' to fetch data for all user (default: current user)",
+            "type": "string",
+            "pattern": "\\d+|all"
+          },
+          {
+            "name": "customer",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "DEPRECATED: Customer ID to filter timesheets (will be removed with 2.0)",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "customers",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Comma separated list of customer IDs to filter timesheets",
+            "type": "string",
+            "pattern": "[\\d|,]+"
+          },
+          {
+            "name": "project",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "DEPRECATED: Project ID to filter timesheets (will be removed with 2.0)",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "projects",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Comma separated list of project IDs to filter timesheets",
+            "type": "string",
+            "pattern": "[\\d|,]+"
+          },
+          {
+            "name": "activity",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "DEPRECATED: Activity ID to filter timesheets (will be removed with 2.0)",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "activities",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Comma separated list of activity IDs to filter timesheets",
+            "type": "string",
+            "pattern": "[\\d|,]+"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The page to display, renders a 404 if not found (default: 1)",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The amount of entries for each page (default: 50)",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Comma separated list of tag names",
+            "type": "string"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The field by which results will be ordered. Allowed values: id, begin, end, rate (default: begin)",
+            "type": "string",
+            "pattern": "id|begin|end|rate"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The result order. Allowed values: ASC, DESC (default: DESC)",
+            "type": "string",
+            "pattern": "ASC|DESC"
+          },
+          {
+            "name": "begin",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Only records after this date will be included (format: HTML5)",
+            "type": "string",
+            "format": "DateTime"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Only records before this date will be included (format: HTML5)",
+            "type": "string",
+            "format": "DateTime"
+          },
+          {
+            "name": "exported",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Use this flag if you want to filter for export state. Allowed values: 0=not exported, 1=exported (default: all)",
+            "type": "string",
+            "pattern": "0|1"
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Filter for running/active records. Allowed values: 0=stopped, 1=active (default: all)",
+            "type": "string",
+            "pattern": "0|1"
+          },
+          {
+            "name": "billable",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Filter for non-/billable records. Allowed values: 0=non-billable, 1=billable (default: all)",
+            "type": "string",
+            "pattern": "0|1"
+          },
+          {
+            "name": "full",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Allows to fetch fully serialized objects including subresources. Allowed values: true (default: false)",
+            "type": "string",
+            "pattern": "true"
+          },
+          {
+            "name": "term",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Free search term",
+            "type": "string"
+          },
+          {
+            "name": "modified_after",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Only records changed after this date will be included (format: HTML5). Available since Kimai 1.10 and works only for records that were created/updated since then.",
+            "type": "string",
+            "format": "DateTime"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of timesheets records. Be aware that the datetime fields are given in the users local time including the timezone offset via ISO 8601.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/TimesheetCollection"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Creates a new timesheet record",
+        "description": "Creates a new timesheet record for the current user and returns it afterwards.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TimesheetEditForm"
+            }
+          },
+          {
+            "name": "full",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Allows to fetch fully serialized objects including subresources (TimesheetEntityExpanded). Allowed values: true (default: false)",
+            "type": "string",
+            "pattern": "true"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created timesheet",
+            "schema": {
+              "$ref": "#/definitions/TimesheetEntity"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/timesheets/{id}": {
+      "get": {
+        "summary": "Returns one timesheet record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Timesheet record ID to fetch",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns one timesheet record. Be aware that the datetime fields are given in the users local time including the timezone offset via ISO 8601.",
+            "schema": {
+              "$ref": "#/definitions/TimesheetEntity"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update an existing timesheet record",
+        "description": "Update an existing timesheet record, you can pass all or just a subset of the attributes.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Timesheet record ID to update",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TimesheetEditForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated timesheet",
+            "schema": {
+              "$ref": "#/definitions/TimesheetEntity"
+            }
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an existing timesheet record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Timesheet record ID to delete",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete one timesheet record"
+          }
+        },
+        "tags": [
+          "Timesheet"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/users/me": {
+      "get": {
+        "summary": "Return the current user entity",
+        "responses": {
+          "200": {
+            "description": "Return the current user entity.",
+            "schema": {
+              "$ref": "#/definitions/UserEntity"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "Returns the collection of all registered users",
+        "parameters": [
+          {
+            "name": "visible",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Visibility status to filter users. Allowed values: 1=visible, 2=hidden, 3=all (default: 1)",
+            "type": "string",
+            "pattern": "1|2|3"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The field by which results will be ordered. Allowed values: id, username, alias, email (default: username)",
+            "type": "string",
+            "pattern": "id|username|alias|email"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The result order. Allowed values: ASC, DESC (default: ASC)",
+            "type": "string",
+            "pattern": "ASC|DESC"
+          },
+          {
+            "name": "term",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Free search term",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the collection of all registered users. Required permission: view_user",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/UserCollection"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Creates a new user",
+        "description": "Creates a new user and returns it afterwards",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserCreateForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created user",
+            "schema": {
+              "$ref": "#/definitions/UserEntity"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "summary": "Return one user entity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "User ID to fetch",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return one user entity.",
+            "schema": {
+              "$ref": "#/definitions/UserEntity"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update an existing user",
+        "description": "Update an existing user, you can pass all or just a subset of all attributes (passing roles will replace all existing ones)",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserEditForm"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "User ID to update",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated user",
+            "schema": {
+              "$ref": "#/definitions/UserEntity"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/kiosks": {
+      "get": {
+        "summary": "Returns a collection of UserAuthCodes objects",
+        "parameters": [
+          {
+            "name": "orderBy",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The field by which results will be ordered. Allowed values: id, user, type, code (default: id)",
+            "type": "string",
+            "pattern": "id|user|type|code"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The result order. Allowed values: ASC, DESC (default: DESC)",
+            "type": "string",
+            "pattern": "ASC|DESC"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The page to display, renders a 404 if not found (default: 1)",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The amount of entries for each page (default: 50)",
+            "type": "string",
+            "pattern": "\\d+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of UserAuthCodes",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/UserAuthCodes"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Kiosk"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/kiosks/{id}": {
+      "get": {
+        "summary": "Returns one UserAuthCodes entity",
+        "description": "Creates the code for the configured default type (if not yet existing).",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "User ID to fetch",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns one UserAuthCodes entity",
+            "schema": {
+              "$ref": "#/definitions/UserAuthCodes"
+            }
+          }
+        },
+        "tags": [
+          "Kiosk"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/expenses/{id}/meta": {
+      "patch": {
+        "summary": "Sets the value of a meta-field for an existing expense",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Expense record ID to set the meta-field value for",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "required": [
+                "name",
+                "value"
+              ],
+              "properties": {
+                "name": {
+                  "description": "The meta-field name",
+                  "type": "string"
+                },
+                "value": {
+                  "description": "The meta-field value",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sets the value of an existing/configured meta-field. You cannot create unknown meta-fields, if the given name is not a configured meta-field, this will return an exception.",
+            "schema": {
+              "$ref": "#/definitions/ExpenseEntity"
+            }
+          }
+        },
+        "tags": [
+          "Expense"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/expenses/{id}/duplicate": {
+      "patch": {
+        "summary": "Duplicates an existing expense record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Expense record ID to duplicate",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Duplicates a expense record, resetting the export state only.",
+            "schema": {
+              "$ref": "#/definitions/ExpenseEntity"
+            }
+          }
+        },
+        "tags": [
+          "Expense"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/expenses": {
+      "get": {
+        "summary": "Returns a collection of expenses",
+        "parameters": [
+          {
+            "name": "orderBy",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The field by which results will be ordered. Allowed values: begin, end, duration, total, category, cost, user, customer, project, activity, description, exported, refundable, multiplier (default: begin)",
+            "type": "string",
+            "pattern": "begin|end|duration|total|category|cost|user|customer|project|activity|description|exported|refundable|multiplier"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The result order. Allowed values: ASC, DESC (default: DESC)",
+            "type": "string",
+            "pattern": "ASC|DESC"
+          },
+          {
+            "name": "begin",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Only records after this date will be included (format: HTML5)",
+            "type": "string",
+            "format": "DateTime"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Only records before this date will be included (format: HTML5)",
+            "type": "string",
+            "format": "DateTime"
+          },
+          {
+            "name": "refundable",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Use this flag if you want to filter for refundable expenses. Allowed values: 0=not refundable, 1=refundable (default: all)",
+            "type": "string",
+            "pattern": "0|1"
+          },
+          {
+            "name": "exported",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Use this flag if you want to filter for export state. Allowed values: 0=not exported, 1=exported (default: all)",
+            "type": "string",
+            "pattern": "0|1"
+          },
+          {
+            "name": "term",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Free search term",
+            "type": "string",
+            "pattern": "[a-zA-Z0-9 \\-,:]+"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The page to display, renders a 404 if not found (default: 1)",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The amount of entries for each page (default: 50)",
+            "type": "string",
+            "pattern": "\\d+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of expense entities",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/ExpenseEntity"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Expense"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Creates a new expense",
+        "description": "Creates a new expense and returns it afterwards",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ExpenseEditForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created expense",
+            "schema": {
+              "$ref": "#/definitions/ExpenseEntity"
+            }
+          }
+        },
+        "tags": [
+          "Expense"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/expenses/{id}": {
+      "get": {
+        "summary": "Returns one expense",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Expense ID to fetch",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns one expense entity",
+            "schema": {
+              "$ref": "#/definitions/ExpenseEntity"
+            }
+          }
+        },
+        "tags": [
+          "Expense"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update an existing expense",
+        "description": "Update an existing expense, you can pass all or just a subset of all attributes",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ExpenseEditForm"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Expense ID to update",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated expense",
+            "schema": {
+              "$ref": "#/definitions/ExpenseEntity"
+            }
+          }
+        },
+        "tags": [
+          "Expense"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an existing expense record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Expense record ID to delete",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete one expense record"
+          }
+        },
+        "tags": [
+          "Expense"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/metafields": {
+      "get": {
+        "summary": "Returns a collection of meta-fields",
+        "parameters": [
+          {
+            "name": "entity",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "The type of object to fetch meta-fields for. Allowed values: timesheet, customer, project, activity, user, expense - returns all if not given (default: all)",
+            "type": "string",
+            "format": "MetaFieldExternalType"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of meta-fields",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/MetaFieldRule"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "MetaField"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/tasks/{id}/log": {
+      "patch": {
+        "summary": "Logs work for a task record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID to log times for",
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TaskLogWorkForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logs already performed work on a task",
+            "schema": {
+              "$ref": "#/definitions/TimesheetEntityExpanded"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/api/tasks/{id}/start": {
+      "patch": {
+        "summary": "Start a task record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID to start",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Start working on a task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/api/tasks/{id}/stop": {
+      "patch": {
+        "summary": "Stops a task record for the current user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID to stop",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stop working on a task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/api/tasks/{id}/assign": {
+      "patch": {
+        "summary": "Assign a task to the current user",
+        "description": "Assign a currently unassigned task to the current user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID to update",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/api/tasks/{id}/unassign": {
+      "patch": {
+        "summary": "Unassign a task from the current user",
+        "description": "Unassign a currently assigned task from the current user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID to update",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/api/tasks/{id}/close": {
+      "patch": {
+        "summary": "Close a task for the current user",
+        "description": "Closes an assigned task for the current user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID to close",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the closed task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/api/tasks/{id}/reopen": {
+      "patch": {
+        "summary": "Reopens a task for the current user",
+        "description": "Reopens an assigned task for the current user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID to reopen",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the reopened task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/api/tasks": {
+      "get": {
+        "summary": "Returns a collection of tasks",
+        "description": "Attention: This is a GET request and you can pass in every field of the form as query parameter.\nArray values need to be written like this: /api/tasks?projects[]=1&projects[]=2",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "body",
+            "required": true,
+            "description": "Attention: This is a GET request and you can pass in every field of the form as query parameter.",
+            "schema": {
+              "$ref": "#/definitions/TaskQuery"
+            },
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of task entities",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Task"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Creates a new Task",
+        "description": "Creates a new task and returns it afterwards",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TaskEditForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the new created task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      }
+    },
+    "/api/tasks/{id}": {
+      "get": {
+        "summary": "Returns one task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID to fetch",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns one task entity",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update an existing task",
+        "description": "Update an existing task, you can pass all or just a subset of all attributes",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TaskEditForm"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID to update",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ],
+        "security": [
+          {
+            "apiUser": []
+          },
+          {
+            "apiToken": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an existing task record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task record ID to delete",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete one task record"
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "TeamMembership": {
+      "required": [
+        "team",
+        "teamlead"
+      ],
+      "properties": {
+        "team": {
+          "$ref": "#/definitions/Team"
+        },
+        "teamlead": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "TeamMember": {
+      "required": [
+        "user",
+        "teamlead"
+      ],
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "teamlead": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "TeamCollection": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "title": "Team name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 2
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Team": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "teamlead": {
+          "$ref": "#/definitions/User"
+        },
+        "users": {
+          "title": "Returns all users in the team, both teamlead and normal member.",
+          "items": {
+            "$ref": "#/definitions/User"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "title": "Team name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 2
+        },
+        "members": {
+          "title": "All team member (including team leads)",
+          "items": {
+            "$ref": "#/definitions/TeamMember"
+          },
+          "type": "array",
+          "minItems": 1
+        },
+        "customers": {
+          "title": "Customers assigned to the team",
+          "items": {
+            "$ref": "#/definitions/Customer"
+          },
+          "type": "array"
+        },
+        "projects": {
+          "title": "Projects assigned to the team",
+          "items": {
+            "$ref": "#/definitions/Project"
+          },
+          "type": "array"
+        },
+        "activities": {
+          "title": "Activities assigned to the team",
+          "items": {
+            "$ref": "#/definitions/Activity"
+          },
+          "type": "array"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TeamEditForm": {
+      "required": [
+        "name",
+        "members"
+      ],
+      "properties": {
+        "name": {
+          "description": "Name of the team",
+          "type": "string"
+        },
+        "color": {
+          "description": "The hexadecimal color code (default: #d2d6de)",
+          "type": "string"
+        },
+        "members": {
+          "description": "All team members",
+          "items": {
+            "properties": {
+              "user": {
+                "description": "User ID",
+                "type": "integer"
+              },
+              "teamlead": {
+                "description": "Whether the user is a teamlead",
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "UserCollection": {
+      "required": [
+        "username"
+      ],
+      "properties": {
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "alias": {
+          "title": "The user alias will be displayed in the frontend instead of the username",
+          "type": "string",
+          "maxLength": 60
+        },
+        "username": {
+          "type": "string",
+          "maxLength": 60,
+          "minLength": 2
+        },
+        "accountNumber": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "UserEntity": {
+      "required": [
+        "memberships",
+        "username"
+      ],
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "preferences": {
+          "title": "Read-only list of of all visible user preferences.",
+          "items": {
+            "$ref": "#/definitions/UserPreference"
+          },
+          "type": "array"
+        },
+        "teams": {
+          "title": "List of all teams, this user is part of",
+          "items": {
+            "$ref": "#/definitions/Team"
+          },
+          "type": "array"
+        },
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "alias": {
+          "title": "The user alias will be displayed in the frontend instead of the username",
+          "type": "string",
+          "maxLength": 60
+        },
+        "title": {
+          "title": "An additional title for the user, like the Job position or Department",
+          "type": "string",
+          "maxLength": 50
+        },
+        "avatar": {
+          "title": "URL to the user avatar, will be auto-generated if empty",
+          "type": "string",
+          "maxLength": 255
+        },
+        "memberships": {
+          "$ref": "#/definitions/TeamMembership"
+        },
+        "username": {
+          "type": "string",
+          "maxLength": 60,
+          "minLength": 2
+        },
+        "accountNumber": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "roles": {
+          "title": "List of all role names",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "UserPreference": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 2
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "User": {
+      "required": [
+        "username"
+      ],
+      "properties": {
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "alias": {
+          "title": "The user alias will be displayed in the frontend instead of the username",
+          "type": "string",
+          "maxLength": 60
+        },
+        "username": {
+          "type": "string",
+          "maxLength": 60,
+          "minLength": 2
+        },
+        "accountNumber": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "UserEditForm": {
+      "required": [
+        "email",
+        "language",
+        "timezone"
+      ],
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "accountNumber": {
+          "type": "string"
+        },
+        "color": {
+          "description": "The hexadecimal color code (default: #d2d6de)",
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string",
+          "enum": [
+            "ar",
+            "cs",
+            "da",
+            "de",
+            "de_AT",
+            "de_CH",
+            "el",
+            "en",
+            "en_GB",
+            "eo",
+            "es",
+            "eu",
+            "fa",
+            "fi",
+            "fo",
+            "fr",
+            "he",
+            "hr",
+            "hu",
+            "it",
+            "ja",
+            "ko",
+            "nb_NO",
+            "nl",
+            "pl",
+            "pt",
+            "pt_BR",
+            "ro",
+            "ru",
+            "sk",
+            "sv",
+            "tr",
+            "uk",
+            "vi",
+            "zh_CN"
+          ]
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "roles": {
+          "items": {
+            "type": "string",
+            "enum": [
+              "ROLE_TEAMLEAD",
+              "ROLE_ADMIN",
+              "ROLE_SUPER_ADMIN"
+            ]
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "UserCreateForm": {
+      "required": [
+        "username",
+        "email",
+        "language",
+        "timezone",
+        "plainPassword"
+      ],
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "accountNumber": {
+          "type": "string"
+        },
+        "color": {
+          "description": "The hexadecimal color code (default: #d2d6de)",
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string",
+          "enum": [
+            "ar",
+            "cs",
+            "da",
+            "de",
+            "de_AT",
+            "de_CH",
+            "el",
+            "en",
+            "en_GB",
+            "eo",
+            "es",
+            "eu",
+            "fa",
+            "fi",
+            "fo",
+            "fr",
+            "he",
+            "hr",
+            "hu",
+            "it",
+            "ja",
+            "ko",
+            "nb_NO",
+            "nl",
+            "pl",
+            "pt",
+            "pt_BR",
+            "ro",
+            "ru",
+            "sk",
+            "sv",
+            "tr",
+            "uk",
+            "vi",
+            "zh_CN"
+          ]
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "roles": {
+          "items": {
+            "type": "string",
+            "enum": [
+              "ROLE_TEAMLEAD",
+              "ROLE_ADMIN",
+              "ROLE_SUPER_ADMIN"
+            ]
+          },
+          "type": "array"
+        },
+        "plainPassword": {
+          "description": "Plain text password",
+          "type": "string"
+        },
+        "plainApiToken": {
+          "description": "Plain API token",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TimesheetCollectionExpanded": {
+      "required": [
+        "begin",
+        "activity",
+        "project",
+        "exported",
+        "billable"
+      ],
+      "properties": {
+        "user": {
+          "type": "integer"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "begin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "duration": {
+          "type": "integer"
+        },
+        "activity": {
+          "$ref": "#/definitions/ActivityExpanded"
+        },
+        "project": {
+          "$ref": "#/definitions/ProjectExpanded"
+        },
+        "description": {
+          "type": "string"
+        },
+        "rate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "internalRate": {
+          "type": "number",
+          "format": "float"
+        },
+        "exported": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "metaFields": {
+          "title": "Meta fields",
+          "description": "All visible meta (custom) fields registered with this timesheet",
+          "items": {
+            "$ref": "#/definitions/TimesheetMeta"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "TimesheetCollection": {
+      "required": [
+        "begin",
+        "exported",
+        "billable"
+      ],
+      "properties": {
+        "activity": {
+          "type": "integer"
+        },
+        "project": {
+          "type": "integer"
+        },
+        "user": {
+          "type": "integer"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "begin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "duration": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "rate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "internalRate": {
+          "type": "number",
+          "format": "float"
+        },
+        "exported": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "metaFields": {
+          "title": "Meta fields",
+          "description": "All visible meta (custom) fields registered with this timesheet",
+          "items": {
+            "$ref": "#/definitions/TimesheetMeta"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "TimesheetEntityExpanded": {
+      "required": [
+        "begin",
+        "activity",
+        "project",
+        "exported",
+        "billable"
+      ],
+      "properties": {
+        "user": {
+          "type": "integer"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "begin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "duration": {
+          "type": "integer"
+        },
+        "activity": {
+          "$ref": "#/definitions/ActivityExpanded"
+        },
+        "project": {
+          "$ref": "#/definitions/ProjectExpanded"
+        },
+        "description": {
+          "type": "string"
+        },
+        "rate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "internalRate": {
+          "type": "number",
+          "format": "float"
+        },
+        "fixedRate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "hourlyRate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "exported": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "metaFields": {
+          "title": "Meta fields",
+          "description": "All visible meta (custom) fields registered with this timesheet",
+          "items": {
+            "$ref": "#/definitions/TimesheetMeta"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "TimesheetEntity": {
+      "required": [
+        "begin",
+        "exported",
+        "billable"
+      ],
+      "properties": {
+        "activity": {
+          "type": "integer"
+        },
+        "project": {
+          "type": "integer"
+        },
+        "user": {
+          "type": "integer"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "begin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "duration": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "rate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "internalRate": {
+          "type": "number",
+          "format": "float"
+        },
+        "fixedRate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "hourlyRate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "exported": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "metaFields": {
+          "title": "Meta fields",
+          "description": "All visible meta (custom) fields registered with this timesheet",
+          "items": {
+            "$ref": "#/definitions/TimesheetMeta"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "TimesheetEditForm": {
+      "required": [
+        "begin",
+        "project",
+        "activity"
+      ],
+      "properties": {
+        "begin": {
+          "example": "2023-01-14T05:12:43",
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "example": "2023-01-14T05:12:43",
+          "type": "string",
+          "format": "date-time"
+        },
+        "project": {
+          "description": "Project ID",
+          "type": "integer"
+        },
+        "activity": {
+          "description": "Activity ID",
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "fixedRate": {
+          "description": "Fixed rate",
+          "type": "number"
+        },
+        "hourlyRate": {
+          "description": "Hourly rate",
+          "type": "number"
+        },
+        "user": {
+          "description": "User ID",
+          "type": "integer"
+        },
+        "exported": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "tags": {
+          "description": "Comma separated list of tags",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TagEntity": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "title": "The internal ID",
+          "type": "integer"
+        },
+        "name": {
+          "title": "The tag name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 2,
+          "pattern": "((?!,).)*"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TagEditForm": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "description": "The tag name (forbidden character: comma)",
+          "type": "string"
+        },
+        "color": {
+          "description": "The hexadecimal color code (default: #d2d6de)",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ActivityCollection": {
+      "required": [
+        "name",
+        "visible",
+        "billable"
+      ],
+      "properties": {
+        "parentTitle": {
+          "type": "string"
+        },
+        "project": {
+          "type": "integer"
+        },
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "name": {
+          "title": "Name of this activity",
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "comment": {
+          "title": "Description of this activity",
+          "type": "string"
+        },
+        "visible": {
+          "title": "Whether this activity is visible and can be used for timesheets",
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "metaFields": {
+          "title": "Meta fields",
+          "description": "All visible meta (custom) fields registered with this activity",
+          "items": {
+            "$ref": "#/definitions/ActivityMeta"
+          },
+          "type": "array"
+        },
+        "teams": {
+          "title": "Teams",
+          "description": "If no team is assigned, everyone can access the activity",
+          "items": {
+            "$ref": "#/definitions/Team"
+          },
+          "type": "array"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ActivityRateForm": {
+      "required": [
+        "rate"
+      ],
+      "properties": {
+        "user": {
+          "description": "User ID",
+          "type": "integer"
+        },
+        "rate": {
+          "description": "The rate (eg. 10.5)",
+          "type": "number"
+        },
+        "internalRate": {
+          "description": "The internal rate (eg. 10.0 or 10)",
+          "type": "number"
+        },
+        "isFixed": {
+          "description": "If \"true\" each time record gets the same rate, regardless of its duration",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "ActivityRate": {
+      "required": [
+        "isFixed"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "rate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "internalRate": {
+          "type": "number",
+          "format": "float"
+        },
+        "isFixed": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "ActivityExpanded": {
+      "required": [
+        "name",
+        "visible",
+        "billable"
+      ],
+      "properties": {
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "project": {
+          "$ref": "#/definitions/Project"
+        },
+        "name": {
+          "title": "Name of this activity",
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "comment": {
+          "title": "Description of this activity",
+          "type": "string"
+        },
+        "visible": {
+          "title": "Whether this activity is visible and can be used for timesheets",
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Activity": {
+      "required": [
+        "name",
+        "visible",
+        "billable"
+      ],
+      "properties": {
+        "project": {
+          "type": "integer"
+        },
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "name": {
+          "title": "Name of this activity",
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "comment": {
+          "title": "Description of this activity",
+          "type": "string"
+        },
+        "visible": {
+          "title": "Whether this activity is visible and can be used for timesheets",
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ActivityEntity": {
+      "required": [
+        "name",
+        "visible",
+        "billable",
+        "budget",
+        "timeBudget"
+      ],
+      "properties": {
+        "parentTitle": {
+          "type": "string"
+        },
+        "project": {
+          "type": "integer"
+        },
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "name": {
+          "title": "Name of this activity",
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "comment": {
+          "title": "Description of this activity",
+          "type": "string"
+        },
+        "visible": {
+          "title": "Whether this activity is visible and can be used for timesheets",
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "metaFields": {
+          "title": "Meta fields",
+          "description": "All visible meta (custom) fields registered with this activity",
+          "items": {
+            "$ref": "#/definitions/ActivityMeta"
+          },
+          "type": "array"
+        },
+        "teams": {
+          "title": "Teams",
+          "description": "If no team is assigned, everyone can access the activity",
+          "items": {
+            "$ref": "#/definitions/Team"
+          },
+          "type": "array"
+        },
+        "budget": {
+          "title": "The total monetary budget, will be zero if unconfigured.",
+          "type": "number",
+          "format": "float",
+          "maximum": 900000000000,
+          "minimum": 0
+        },
+        "timeBudget": {
+          "title": "The time budget in seconds, will be zero if unconfigured.",
+          "type": "integer",
+          "maximum": 2145600000,
+          "minimum": 0
+        },
+        "budgetType": {
+          "title": "The type of budget:\n - null      = default / full time\n - month     = monthly budget",
+          "type": "string"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ActivityEditForm": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "invoiceText": {
+          "type": "string"
+        },
+        "project": {
+          "description": "Project ID",
+          "type": "integer"
+        },
+        "color": {
+          "description": "The hexadecimal color code (default: #d2d6de)",
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "ProjectCollection": {
+      "required": [
+        "name",
+        "visible",
+        "billable",
+        "globalActivities"
+      ],
+      "properties": {
+        "parentTitle": {
+          "type": "string"
+        },
+        "customer": {
+          "type": "integer"
+        },
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "name": {
+          "title": "Project name",
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "metaFields": {
+          "title": "Meta fields",
+          "description": "All visible meta (custom) fields registered with this project",
+          "items": {
+            "$ref": "#/definitions/ProjectMeta"
+          },
+          "type": "array"
+        },
+        "teams": {
+          "title": "Teams",
+          "description": "If no team is assigned, everyone can access the project (also depends on the teams of the customer)",
+          "items": {
+            "$ref": "#/definitions/Team"
+          },
+          "type": "array"
+        },
+        "globalActivities": {
+          "title": "Whether this project allows booking of global activities",
+          "type": "boolean"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProjectRateForm": {
+      "required": [
+        "rate"
+      ],
+      "properties": {
+        "user": {
+          "description": "User ID",
+          "type": "integer"
+        },
+        "rate": {
+          "description": "The rate (eg. 10.5)",
+          "type": "number"
+        },
+        "internalRate": {
+          "description": "The internal rate (eg. 10.0 or 10)",
+          "type": "number"
+        },
+        "isFixed": {
+          "description": "If \"true\" each time record gets the same rate, regardless of its duration",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "ProjectRate": {
+      "required": [
+        "isFixed"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "rate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "internalRate": {
+          "type": "number",
+          "format": "float"
+        },
+        "isFixed": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "ProjectExpanded": {
+      "required": [
+        "customer",
+        "name",
+        "visible",
+        "billable",
+        "globalActivities"
+      ],
+      "properties": {
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "customer": {
+          "$ref": "#/definitions/Customer"
+        },
+        "name": {
+          "title": "Project name",
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "comment": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "globalActivities": {
+          "title": "Whether this project allows booking of global activities",
+          "type": "boolean"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Project": {
+      "required": [
+        "name",
+        "visible",
+        "billable",
+        "globalActivities"
+      ],
+      "properties": {
+        "customer": {
+          "type": "integer"
+        },
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "name": {
+          "title": "Project name",
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "comment": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "globalActivities": {
+          "title": "Whether this project allows booking of global activities",
+          "type": "boolean"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProjectEntity": {
+      "required": [
+        "name",
+        "visible",
+        "billable",
+        "globalActivities",
+        "budget",
+        "timeBudget"
+      ],
+      "properties": {
+        "parentTitle": {
+          "type": "string"
+        },
+        "customer": {
+          "type": "integer"
+        },
+        "id": {
+          "title": "Internal ID",
+          "type": "integer"
+        },
+        "name": {
+          "title": "Project name",
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "orderNumber": {
+          "title": "Project order number",
+          "type": "string",
+          "maxLength": 50
+        },
+        "orderDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "metaFields": {
+          "title": "Meta fields",
+          "description": "All visible meta (custom) fields registered with this project",
+          "items": {
+            "$ref": "#/definitions/ProjectMeta"
+          },
+          "type": "array"
+        },
+        "teams": {
+          "title": "Teams",
+          "description": "If no team is assigned, everyone can access the project (also depends on the teams of the customer)",
+          "items": {
+            "$ref": "#/definitions/Team"
+          },
+          "type": "array"
+        },
+        "globalActivities": {
+          "title": "Whether this project allows booking of global activities",
+          "type": "boolean"
+        },
+        "budget": {
+          "title": "The total monetary budget, will be zero if unconfigured.",
+          "type": "number",
+          "format": "float",
+          "maximum": 900000000000,
+          "minimum": 0
+        },
+        "timeBudget": {
+          "title": "The time budget in seconds, will be zero if unconfigured.",
+          "type": "integer",
+          "maximum": 2145600000,
+          "minimum": 0
+        },
+        "budgetType": {
+          "title": "The type of budget:\n - null      = default / full time\n - month     = monthly budget",
+          "type": "string"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProjectEditForm": {
+      "required": [
+        "name",
+        "customer"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "invoiceText": {
+          "type": "string"
+        },
+        "orderNumber": {
+          "type": "string"
+        },
+        "orderDate": {
+          "example": "2023-01-14T05:12:43",
+          "type": "string",
+          "format": "date-time"
+        },
+        "start": {
+          "example": "2023-01-14T05:12:43",
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "example": "2023-01-14T05:12:43",
+          "type": "string",
+          "format": "date-time"
+        },
+        "customer": {
+          "description": "Customer ID",
+          "type": "integer"
+        },
+        "color": {
+          "description": "The hexadecimal color code (default: #d2d6de)",
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "globalActivities": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "CustomerCollection": {
+      "required": [
+        "name",
+        "visible",
+        "billable",
+        "currency"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "number": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "comment": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "currency": {
+          "type": "string",
+          "maxLength": 3
+        },
+        "metaFields": {
+          "title": "Meta fields",
+          "description": "All visible meta (custom) fields registered with this customer",
+          "items": {
+            "$ref": "#/definitions/CustomerMeta"
+          },
+          "type": "array"
+        },
+        "teams": {
+          "title": "Teams",
+          "description": "If no team is assigned, everyone can access the customer",
+          "items": {
+            "$ref": "#/definitions/Team"
+          },
+          "type": "array"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "CustomerRateForm": {
+      "required": [
+        "rate"
+      ],
+      "properties": {
+        "user": {
+          "description": "User ID",
+          "type": "integer"
+        },
+        "rate": {
+          "description": "The rate (eg. 10.5)",
+          "type": "number"
+        },
+        "internalRate": {
+          "description": "The internal rate (eg. 10.0 or 10)",
+          "type": "number"
+        },
+        "isFixed": {
+          "description": "If \"true\" each time record gets the same rate, regardless of its duration",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "CustomerRate": {
+      "required": [
+        "isFixed"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "rate": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "internalRate": {
+          "type": "number",
+          "format": "float"
+        },
+        "isFixed": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "Customer": {
+      "required": [
+        "name",
+        "visible",
+        "billable"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "number": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "comment": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "CustomerEntity": {
+      "required": [
+        "name",
+        "visible",
+        "billable",
+        "country",
+        "currency",
+        "timezone",
+        "budget",
+        "timeBudget"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 150,
+          "minLength": 2
+        },
+        "number": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "comment": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        },
+        "company": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "vatId": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "contact": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "address": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string",
+          "maxLength": 2
+        },
+        "currency": {
+          "type": "string",
+          "maxLength": 3
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "fax": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "mobile": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "email": {
+          "title": "Customers contact email",
+          "description": "Limited via RFC to 254 chars",
+          "type": "string",
+          "maxLength": 254
+        },
+        "homepage": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "timezone": {
+          "title": "Timezone of begin and end",
+          "description": "Length was determined by a MySQL column via \"use mysql;describe time_zone_name;\"",
+          "type": "string",
+          "maxLength": 64
+        },
+        "metaFields": {
+          "title": "Meta fields",
+          "description": "All visible meta (custom) fields registered with this customer",
+          "items": {
+            "$ref": "#/definitions/CustomerMeta"
+          },
+          "type": "array"
+        },
+        "teams": {
+          "title": "Teams",
+          "description": "If no team is assigned, everyone can access the customer",
+          "items": {
+            "$ref": "#/definitions/Team"
+          },
+          "type": "array"
+        },
+        "budget": {
+          "title": "The total monetary budget, will be zero if unconfigured.",
+          "type": "number",
+          "format": "float",
+          "maximum": 900000000000,
+          "minimum": 0
+        },
+        "timeBudget": {
+          "title": "The time budget in seconds, will be zero if unconfigured.",
+          "type": "integer",
+          "maximum": 2145600000,
+          "minimum": 0
+        },
+        "budgetType": {
+          "title": "The type of budget:\n - null      = default / full time\n - month     = monthly budget",
+          "type": "string"
+        },
+        "color": {
+          "title": "The assigned color in HTML hex format, eg. #dd1d00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "CustomerEditForm": {
+      "required": [
+        "name",
+        "country",
+        "currency",
+        "timezone"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "company": {
+          "type": "string"
+        },
+        "vatId": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "fax": {
+          "type": "string"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "homepage": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "color": {
+          "description": "The hexadecimal color code (default: #d2d6de)",
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "billable": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "UserAuthCodes": {
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "codes": {
+          "items": {
+            "$ref": "#/definitions/UserAuth"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "UserAuth": {
+      "required": [
+        "type",
+        "code"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ExpenseCategory": {
+      "required": [
+        "name",
+        "visible"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 2
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "ExpenseEntity": {
+      "required": [
+        "category",
+        "cost",
+        "exported",
+        "refundable"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "category": {
+          "$ref": "#/definitions/ExpenseCategory"
+        },
+        "description": {
+          "type": "string"
+        },
+        "cost": {
+          "type": "number",
+          "format": "float"
+        },
+        "multiplier": {
+          "type": "number",
+          "format": "float",
+          "minimum": 0
+        },
+        "exported": {
+          "type": "boolean"
+        },
+        "refundable": {
+          "type": "boolean"
+        },
+        "total": {
+          "type": "number",
+          "format": "float"
+        },
+        "begin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "activity": {
+          "type": "integer"
+        },
+        "project": {
+          "type": "integer"
+        },
+        "user": {
+          "type": "integer"
+        },
+        "metaFields": {
+          "items": {
+            "$ref": "#/definitions/ExpenseMeta"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ExpenseEditForm": {
+      "required": [
+        "project",
+        "expenseCategory",
+        "multiplier",
+        "begin"
+      ],
+      "properties": {
+        "customer": {
+          "description": "Customer ID",
+          "type": "integer"
+        },
+        "project": {
+          "description": "Project ID",
+          "type": "integer"
+        },
+        "activity": {
+          "description": "Activity ID",
+          "type": "integer"
+        },
+        "expenseCategory": {
+          "type": "string",
+          "format": "KimaiPlugin\\ExpensesBundle\\Entity\\ExpenseCategory id"
+        },
+        "description": {
+          "type": "string"
+        },
+        "multiplier": {
+          "type": "number"
+        },
+        "refundable": {
+          "type": "boolean"
+        },
+        "begin": {
+          "example": "2023-01-14T05:12:43",
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "type": "object"
+    },
+    "MetaFieldRule": {
+      "required": [
+        "name",
+        "type",
+        "visible",
+        "required"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 2
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "help": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "value": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "entityType": {
+          "type": "string"
+        },
+        "customer": {
+          "type": "integer"
+        },
+        "project": {
+          "type": "integer"
+        },
+        "activity": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "TaskQuery": {
+      "required": [
+        "customers",
+        "projects",
+        "activities",
+        "order",
+        "orderBy"
+      ],
+      "properties": {
+        "searchTerm": {
+          "type": "string"
+        },
+        "customers": {
+          "description": "Array of customer IDs",
+          "items": {
+            "description": "Customer ID",
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "projects": {
+          "description": "Array of project IDs",
+          "items": {
+            "description": "Project ID",
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "activities": {
+          "description": "Array of activity IDs",
+          "items": {
+            "description": "Activity ID",
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "tags": {
+          "description": "Comma separated list of tags",
+          "type": "string"
+        },
+        "users": {
+          "description": "Array of user IDs",
+          "items": {
+            "description": "User ID",
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "teams": {
+          "description": "Array of team IDs",
+          "items": {
+            "description": "Team ID",
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "status": {
+          "items": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "progress",
+              "closed"
+            ]
+          },
+          "type": "array"
+        },
+        "pageSize": {
+          "type": "number",
+          "enum": [
+            10,
+            15,
+            20,
+            25,
+            30,
+            35,
+            40,
+            45,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            125,
+            150,
+            175,
+            200,
+            250,
+            300,
+            350,
+            400,
+            450,
+            500
+          ]
+        },
+        "page": {
+          "description": "Page number. Default: 1",
+          "type": "integer"
+        },
+        "order": {
+          "description": "The order for returned items",
+          "type": "string",
+          "enum": [
+            "ASC",
+            "DESC"
+          ]
+        },
+        "orderBy": {
+          "type": "string",
+          "enum": [
+            "title",
+            "customer",
+            "project",
+            "activity",
+            "description",
+            "status",
+            "user",
+            "begin",
+            "end",
+            "team"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "TaskLogWorkForm": {
+      "properties": {
+        "begin": {
+          "example": "2023-01-14T05:12:43",
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "example": "2023-01-14T05:12:43",
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "type": "object"
+    },
+    "Task": {
+      "required": [
+        "title",
+        "status",
+        "project",
+        "activity"
+      ],
+      "properties": {
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "activeTimesheets": {
+          "items": {
+            "$ref": "#/definitions/TimesheetEntityExpanded"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 2
+        },
+        "status": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "todo": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "project": {
+          "$ref": "#/definitions/ProjectExpanded"
+        },
+        "activity": {
+          "$ref": "#/definitions/ActivityExpanded"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "team": {
+          "$ref": "#/definitions/Team"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "estimation": {
+          "title": "Estimated duration for the task in seconds or null if no estimation was added",
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "type": "object"
+    },
+    "TaskEditForm": {
+      "required": [
+        "title",
+        "project",
+        "activity"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "todo": {
+          "description": "The actual doings, which will be available on the detail and edit page.",
+          "type": "string"
+        },
+        "end": {
+          "example": "2023-01-14T05:12:43",
+          "type": "string",
+          "format": "date-time"
+        },
+        "project": {
+          "description": "Project ID",
+          "type": "integer"
+        },
+        "activity": {
+          "description": "Activity ID",
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "tags": {
+          "description": "Comma separated list of tags",
+          "type": "string"
+        },
+        "user": {
+          "description": "User ID",
+          "type": "integer"
+        },
+        "team": {
+          "description": "Team ID",
+          "type": "integer"
+        },
+        "estimation": {
+          "description": "Estimation in seconds",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "I18nConfig": {
+      "properties": {
+        "formDate": {
+          "title": "Format used for toolbar queries",
+          "type": "string"
+        },
+        "dateTime": {
+          "title": "Format used to display date-time values (see PHP function date_format)",
+          "type": "string"
+        },
+        "date": {
+          "title": "Format used to display date values (see PHP function date_format)",
+          "type": "string"
+        },
+        "time": {
+          "title": "Format used to display times (see PHP function date_format)",
+          "type": "string"
+        },
+        "duration": {
+          "title": "Format used to display durations (replace: %h with hours, %m with minutes, %s with seconds)",
+          "type": "string"
+        },
+        "is24hours": {
+          "title": "Whether a twenty-four hour format is used (true) or 12-hours AM/PM format (false)",
+          "type": "boolean"
+        },
+        "now": {
+          "title": "The current time of the user",
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "type": "object"
+    },
+    "TimesheetConfig": {
+      "properties": {
+        "trackingMode": {
+          "title": "The time-tracking mode, see also: https://www.kimai.org/documentation/timesheet.html#tracking-modes",
+          "type": "string"
+        },
+        "defaultBeginTime": {
+          "title": "Default begin datetime in PHP format",
+          "type": "string"
+        },
+        "activeEntriesHardLimit": {
+          "title": "How many running timesheets a user is allowed to have at the same time",
+          "type": "integer"
+        },
+        "activeEntriesSoftLimit": {
+          "title": "How many running timesheets a user is allowed before a warning is shown",
+          "type": "integer"
+        },
+        "isAllowFutureTimes": {
+          "title": "Whether entries for future times are allowed",
+          "type": "boolean"
+        },
+        "isAllowOverlapping": {
+          "title": "Whether overlapping entries are allowed",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "Version": {
+      "properties": {
+        "version": {
+          "title": "Kimai Version, eg. \"1.14\"",
+          "type": "string"
+        },
+        "versionId": {
+          "title": "Kimai Version as integer, eg. 11400",
+          "description": "Follows the same logic as PHP_VERSION_ID, see https://www.php.net/manual/de/function.phpversion.php",
+          "type": "integer"
+        },
+        "candidate": {
+          "title": "Candidate: either \"prod\" or \"dev\"",
+          "type": "string"
+        },
+        "semver": {
+          "title": "Full version including status, eg: \"1.9-prod\"",
+          "type": "string"
+        },
+        "name": {
+          "title": "The version name",
+          "type": "string"
+        },
+        "copyright": {
+          "title": "A full copyright notice",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Plugin": {
+      "properties": {
+        "name": {
+          "title": "The plugin name, eg. \"ExpensesBundle\"",
+          "type": "string"
+        },
+        "version": {
+          "title": "The plugin version, eg. \"1.14\"",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TimesheetMeta": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "title": "Name of the meta (custom) field",
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 2
+        },
+        "value": {
+          "title": "Value of the meta (custom) field",
+          "type": "string",
+          "maxLength": 65535
+        }
+      },
+      "type": "object"
+    },
+    "ActivityMeta": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "title": "Name of the meta (custom) field",
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 2
+        },
+        "value": {
+          "title": "Value of the meta (custom) field",
+          "type": "string",
+          "maxLength": 65535
+        }
+      },
+      "type": "object"
+    },
+    "ProjectMeta": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "title": "Name of the meta (custom) field",
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 2
+        },
+        "value": {
+          "title": "Value of the meta (custom) field",
+          "type": "string",
+          "maxLength": 65535
+        }
+      },
+      "type": "object"
+    },
+    "CustomerMeta": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "title": "Name of the meta (custom) field",
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 2
+        },
+        "value": {
+          "title": "Value of the meta (custom) field",
+          "type": "string",
+          "maxLength": 65535
+        }
+      },
+      "type": "object"
+    },
+    "ExpenseMeta": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "title": "Name of the meta (custom) field",
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 2
+        },
+        "value": {
+          "title": "Value of the meta (custom) field",
+          "type": "string",
+          "maxLength": 65535
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "apiUser": {
+      "name": "X-AUTH-USER",
+      "type": "apiKey",
+      "in": "header",
+      "description": "Value: {Username}"
+    },
+    "apiToken": {
+      "name": "X-AUTH-TOKEN",
+      "type": "apiKey",
+      "in": "header",
+      "description": "Value: {API Token}"
+    }
+  },
+  "security": [
+    {
+      "X-AUTH-USER": []
+    },
+    {
+      "X-AUTH-TOKEN": []
+    }
+  ],
+  "host": "demo.kimai.org"
+}
