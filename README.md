@@ -18,6 +18,10 @@ See [`example.go`](./example.go), also [`.envrc.sample`](./.envrc.example).
 
 - [`kimai/kimai#3720`](https://github.com/kimai/kimai/issues/3720)
 
+## Examples
+
+- [`kimchi`](https://git.autonomic.zone/decentral1se/kimchi)
+
 ## License
 
 <a><img src="https://www.gnu.org/graphics/gplv3-with-text-136x68.png"/></a>
