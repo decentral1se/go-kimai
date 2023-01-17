@@ -4,6 +4,8 @@
 
 Go Kimai client, generated with [`go-swagger`](https://github.com/go-swagger/go-swagger) 🐢
 
+Generated against Kimai version 0.6.
+
 ## Usage
 
 See [`example.go`](./example.go), also [`.envrc.sample`](./.envrc.example).
@@ -14,7 +16,7 @@ See [`example.go`](./example.go), also [`.envrc.sample`](./.envrc.example).
 
 ## Known issues
 
-- [`kimai#3720`](https://github.com/kimai/kimai/issues/3720)
+- [`kimai/kimai#3720`](https://github.com/kimai/kimai/issues/3720)
 
 ## License
 
