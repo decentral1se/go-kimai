@@ -16,7 +16,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"decentral1se/go-kimai/models"
+	"github.com/decentral1se/go-kimai/models"
 )
 
 // NewPatchAPIActivitiesIDParams creates a new PatchAPIActivitiesIDParams object,

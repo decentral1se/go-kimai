@@ -1,4 +1,4 @@
-module decentral1se/go-kimai
+module github.com/decentral1se/go-kimai
 
 go 1.18
 

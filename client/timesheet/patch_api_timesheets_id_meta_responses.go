@@ -16,7 +16,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"decentral1se/go-kimai/models"
+	"github.com/decentral1se/go-kimai/models"
 )
 
 // PatchAPITimesheetsIDMetaReader is a Reader for the PatchAPITimesheetsIDMeta structure.

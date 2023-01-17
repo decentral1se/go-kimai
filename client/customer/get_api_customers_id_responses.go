@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
-	"decentral1se/go-kimai/models"
+	"github.com/decentral1se/go-kimai/models"
 )
 
 // GetAPICustomersIDReader is a Reader for the GetAPICustomersID structure.

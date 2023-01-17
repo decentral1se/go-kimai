@@ -15,7 +15,7 @@ import (
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 
-	"decentral1se/go-kimai/models"
+	"github.com/decentral1se/go-kimai/models"
 )
 
 // NewGetAPITasksParams creates a new GetAPITasksParams object,
