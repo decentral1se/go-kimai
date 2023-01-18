@@ -4231,7 +4231,8 @@
         "end": {
           "example": "2023-01-14T05:12:43",
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "x-nullable": true
         },
         "project": {
           "description": "Project ID",

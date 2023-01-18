@@ -38,7 +38,7 @@ type TimesheetEditForm struct {
 	// end
 	// Example: 2023-01-14T05:12:43
 	// Format: date-time
-	End strfmt.DateTime `json:"end,omitempty"`
+	End *strfmt.DateTime `json:"end,omitempty"`
 
 	// exported
 	Exported bool `json:"exported,omitempty"`
