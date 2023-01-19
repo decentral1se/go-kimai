@@ -17,6 +17,7 @@ See [`example.go`](./example.go), also [`.envrc.sample`](./.envrc.example).
 ## Known issues
 
 - [`kimai/kimai#3720`](https://github.com/kimai/kimai/issues/3720)
+- Specifying `full=true` seems to break unmarshalling on responses, sadly
 
 ## Examples
 
