@@ -65,19 +65,19 @@ type GetAPITimesheetsParams struct {
 
 	   Filter for running/active records. Allowed values: 0=stopped, 1=active (default: all)
 	*/
-	Active string
+	Active *string
 
 	/* Activities.
 
 	   Comma separated list of activity IDs to filter timesheets
 	*/
-	Activities string
+	Activities *string
 
 	/* Activity.
 
 	   DEPRECATED: Activity ID to filter timesheets (will be removed with 2.0)
 	*/
-	Activity string
+	Activity *string
 
 	/* Begin.
 
@@ -85,25 +85,25 @@ type GetAPITimesheetsParams struct {
 
 	   Format: DateTime
 	*/
-	Begin string
+	Begin *string
 
 	/* Billable.
 
 	   Filter for non-/billable records. Allowed values: 0=non-billable, 1=billable (default: all)
 	*/
-	Billable string
+	Billable *string
 
 	/* Customer.
 
 	   DEPRECATED: Customer ID to filter timesheets (will be removed with 2.0)
 	*/
-	Customer string
+	Customer *string
 
 	/* Customers.
 
 	   Comma separated list of customer IDs to filter timesheets
 	*/
-	Customers string
+	Customers *string
 
 	/* End.
 
@@ -111,19 +111,19 @@ type GetAPITimesheetsParams struct {
 
 	   Format: DateTime
 	*/
-	End string
+	End *string
 
 	/* Exported.
 
 	   Use this flag if you want to filter for export state. Allowed values: 0=not exported, 1=exported (default: all)
 	*/
-	Exported string
+	Exported *string
 
 	/* Full.
 
 	   Allows to fetch fully serialized objects including subresources. Allowed values: true (default: false)
 	*/
-	Full string
+	Full *string
 
 	/* ModifiedAfter.
 
@@ -131,49 +131,49 @@ type GetAPITimesheetsParams struct {
 
 	   Format: DateTime
 	*/
-	ModifiedAfter string
+	ModifiedAfter *string
 
 	/* Order.
 
 	   The result order. Allowed values: ASC, DESC (default: DESC)
 	*/
-	Order string
+	Order *string
 
 	/* OrderBy.
 
 	   The field by which results will be ordered. Allowed values: id, begin, end, rate (default: begin)
 	*/
-	OrderBy string
+	OrderBy *string
 
 	/* Page.
 
 	   The page to display, renders a 404 if not found (default: 1)
 	*/
-	Page string
+	Page *string
 
 	/* Project.
 
 	   DEPRECATED: Project ID to filter timesheets (will be removed with 2.0)
 	*/
-	Project string
+	Project *string
 
 	/* Projects.
 
 	   Comma separated list of project IDs to filter timesheets
 	*/
-	Projects string
+	Projects *string
 
 	/* Size.
 
 	   The amount of entries for each page (default: 50)
 	*/
-	Size string
+	Size *string
 
 	/* Tags.
 
 	   Comma separated list of tag names
 	*/
-	Tags string
+	Tags *string
 
 	/* Term.
 
@@ -185,7 +185,7 @@ type GetAPITimesheetsParams struct {
 
 	   User ID to filter timesheets. Needs permission 'view_other_timesheet', pass 'all' to fetch data for all user (default: current user)
 	*/
-	User string
+	User *string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -241,200 +241,200 @@ func (o *GetAPITimesheetsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithActive adds the active to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithActive(active string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithActive(active *string) *GetAPITimesheetsParams {
 	o.SetActive(active)
 	return o
 }
 
 // SetActive adds the active to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetActive(active string) {
+func (o *GetAPITimesheetsParams) SetActive(active *string) {
 	o.Active = active
 }
 
 // WithActivities adds the activities to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithActivities(activities string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithActivities(activities *string) *GetAPITimesheetsParams {
 	o.SetActivities(activities)
 	return o
 }
 
 // SetActivities adds the activities to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetActivities(activities string) {
+func (o *GetAPITimesheetsParams) SetActivities(activities *string) {
 	o.Activities = activities
 }
 
 // WithActivity adds the activity to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithActivity(activity string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithActivity(activity *string) *GetAPITimesheetsParams {
 	o.SetActivity(activity)
 	return o
 }
 
 // SetActivity adds the activity to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetActivity(activity string) {
+func (o *GetAPITimesheetsParams) SetActivity(activity *string) {
 	o.Activity = activity
 }
 
 // WithBegin adds the begin to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithBegin(begin string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithBegin(begin *string) *GetAPITimesheetsParams {
 	o.SetBegin(begin)
 	return o
 }
 
 // SetBegin adds the begin to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetBegin(begin string) {
+func (o *GetAPITimesheetsParams) SetBegin(begin *string) {
 	o.Begin = begin
 }
 
 // WithBillable adds the billable to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithBillable(billable string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithBillable(billable *string) *GetAPITimesheetsParams {
 	o.SetBillable(billable)
 	return o
 }
 
 // SetBillable adds the billable to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetBillable(billable string) {
+func (o *GetAPITimesheetsParams) SetBillable(billable *string) {
 	o.Billable = billable
 }
 
 // WithCustomer adds the customer to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithCustomer(customer string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithCustomer(customer *string) *GetAPITimesheetsParams {
 	o.SetCustomer(customer)
 	return o
 }
 
 // SetCustomer adds the customer to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetCustomer(customer string) {
+func (o *GetAPITimesheetsParams) SetCustomer(customer *string) {
 	o.Customer = customer
 }
 
 // WithCustomers adds the customers to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithCustomers(customers string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithCustomers(customers *string) *GetAPITimesheetsParams {
 	o.SetCustomers(customers)
 	return o
 }
 
 // SetCustomers adds the customers to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetCustomers(customers string) {
+func (o *GetAPITimesheetsParams) SetCustomers(customers *string) {
 	o.Customers = customers
 }
 
 // WithEnd adds the end to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithEnd(end string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithEnd(end *string) *GetAPITimesheetsParams {
 	o.SetEnd(end)
 	return o
 }
 
 // SetEnd adds the end to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetEnd(end string) {
+func (o *GetAPITimesheetsParams) SetEnd(end *string) {
 	o.End = end
 }
 
 // WithExported adds the exported to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithExported(exported string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithExported(exported *string) *GetAPITimesheetsParams {
 	o.SetExported(exported)
 	return o
 }
 
 // SetExported adds the exported to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetExported(exported string) {
+func (o *GetAPITimesheetsParams) SetExported(exported *string) {
 	o.Exported = exported
 }
 
 // WithFull adds the full to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithFull(full string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithFull(full *string) *GetAPITimesheetsParams {
 	o.SetFull(full)
 	return o
 }
 
 // SetFull adds the full to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetFull(full string) {
+func (o *GetAPITimesheetsParams) SetFull(full *string) {
 	o.Full = full
 }
 
 // WithModifiedAfter adds the modifiedAfter to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithModifiedAfter(modifiedAfter string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithModifiedAfter(modifiedAfter *string) *GetAPITimesheetsParams {
 	o.SetModifiedAfter(modifiedAfter)
 	return o
 }
 
 // SetModifiedAfter adds the modifiedAfter to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetModifiedAfter(modifiedAfter string) {
+func (o *GetAPITimesheetsParams) SetModifiedAfter(modifiedAfter *string) {
 	o.ModifiedAfter = modifiedAfter
 }
 
 // WithOrder adds the order to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithOrder(order string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithOrder(order *string) *GetAPITimesheetsParams {
 	o.SetOrder(order)
 	return o
 }
 
 // SetOrder adds the order to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetOrder(order string) {
+func (o *GetAPITimesheetsParams) SetOrder(order *string) {
 	o.Order = order
 }
 
 // WithOrderBy adds the orderBy to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithOrderBy(orderBy string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithOrderBy(orderBy *string) *GetAPITimesheetsParams {
 	o.SetOrderBy(orderBy)
 	return o
 }
 
 // SetOrderBy adds the orderBy to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetOrderBy(orderBy string) {
+func (o *GetAPITimesheetsParams) SetOrderBy(orderBy *string) {
 	o.OrderBy = orderBy
 }
 
 // WithPage adds the page to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithPage(page string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithPage(page *string) *GetAPITimesheetsParams {
 	o.SetPage(page)
 	return o
 }
 
 // SetPage adds the page to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetPage(page string) {
+func (o *GetAPITimesheetsParams) SetPage(page *string) {
 	o.Page = page
 }
 
 // WithProject adds the project to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithProject(project string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithProject(project *string) *GetAPITimesheetsParams {
 	o.SetProject(project)
 	return o
 }
 
 // SetProject adds the project to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetProject(project string) {
+func (o *GetAPITimesheetsParams) SetProject(project *string) {
 	o.Project = project
 }
 
 // WithProjects adds the projects to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithProjects(projects string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithProjects(projects *string) *GetAPITimesheetsParams {
 	o.SetProjects(projects)
 	return o
 }
 
 // SetProjects adds the projects to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetProjects(projects string) {
+func (o *GetAPITimesheetsParams) SetProjects(projects *string) {
 	o.Projects = projects
 }
 
 // WithSize adds the size to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithSize(size string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithSize(size *string) *GetAPITimesheetsParams {
 	o.SetSize(size)
 	return o
 }
 
 // SetSize adds the size to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetSize(size string) {
+func (o *GetAPITimesheetsParams) SetSize(size *string) {
 	o.Size = size
 }
 
 // WithTags adds the tags to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithTags(tags string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithTags(tags *string) *GetAPITimesheetsParams {
 	o.SetTags(tags)
 	return o
 }
 
 // SetTags adds the tags to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetTags(tags string) {
+func (o *GetAPITimesheetsParams) SetTags(tags *string) {
 	o.Tags = tags
 }
 
@@ -450,13 +450,13 @@ func (o *GetAPITimesheetsParams) SetTerm(term *string) {
 }
 
 // WithUser adds the user to the get API timesheets params
-func (o *GetAPITimesheetsParams) WithUser(user string) *GetAPITimesheetsParams {
+func (o *GetAPITimesheetsParams) WithUser(user *string) *GetAPITimesheetsParams {
 	o.SetUser(user)
 	return o
 }
 
 // SetUser adds the user to the get API timesheets params
-func (o *GetAPITimesheetsParams) SetUser(user string) {
+func (o *GetAPITimesheetsParams) SetUser(user *string) {
 	o.User = user
 }
 
@@ -468,148 +468,310 @@ func (o *GetAPITimesheetsParams) WriteToRequest(r runtime.ClientRequest, reg str
 	}
 	var res []error
 
-	// query param active
-	qrActive := o.Active
-	qActive := qrActive
+	if o.Active != nil {
 
-	if err := r.SetQueryParam("active", qActive); err != nil {
-		return err
+		// query param active
+		var qrActive string
+
+		if o.Active != nil {
+			qrActive = *o.Active
+		}
+		qActive := qrActive
+		if qActive != "" {
+
+			if err := r.SetQueryParam("active", qActive); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param activities
-	qrActivities := o.Activities
-	qActivities := qrActivities
+	if o.Activities != nil {
 
-	if err := r.SetQueryParam("activities", qActivities); err != nil {
-		return err
+		// query param activities
+		var qrActivities string
+
+		if o.Activities != nil {
+			qrActivities = *o.Activities
+		}
+		qActivities := qrActivities
+		if qActivities != "" {
+
+			if err := r.SetQueryParam("activities", qActivities); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param activity
-	qrActivity := o.Activity
-	qActivity := qrActivity
+	if o.Activity != nil {
 
-	if err := r.SetQueryParam("activity", qActivity); err != nil {
-		return err
+		// query param activity
+		var qrActivity string
+
+		if o.Activity != nil {
+			qrActivity = *o.Activity
+		}
+		qActivity := qrActivity
+		if qActivity != "" {
+
+			if err := r.SetQueryParam("activity", qActivity); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param begin
-	qrBegin := o.Begin
-	qBegin := qrBegin
+	if o.Begin != nil {
 
-	if err := r.SetQueryParam("begin", qBegin); err != nil {
-		return err
+		// query param begin
+		var qrBegin string
+
+		if o.Begin != nil {
+			qrBegin = *o.Begin
+		}
+		qBegin := qrBegin
+		if qBegin != "" {
+
+			if err := r.SetQueryParam("begin", qBegin); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param billable
-	qrBillable := o.Billable
-	qBillable := qrBillable
+	if o.Billable != nil {
 
-	if err := r.SetQueryParam("billable", qBillable); err != nil {
-		return err
+		// query param billable
+		var qrBillable string
+
+		if o.Billable != nil {
+			qrBillable = *o.Billable
+		}
+		qBillable := qrBillable
+		if qBillable != "" {
+
+			if err := r.SetQueryParam("billable", qBillable); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param customer
-	qrCustomer := o.Customer
-	qCustomer := qrCustomer
+	if o.Customer != nil {
 
-	if err := r.SetQueryParam("customer", qCustomer); err != nil {
-		return err
+		// query param customer
+		var qrCustomer string
+
+		if o.Customer != nil {
+			qrCustomer = *o.Customer
+		}
+		qCustomer := qrCustomer
+		if qCustomer != "" {
+
+			if err := r.SetQueryParam("customer", qCustomer); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param customers
-	qrCustomers := o.Customers
-	qCustomers := qrCustomers
+	if o.Customers != nil {
 
-	if err := r.SetQueryParam("customers", qCustomers); err != nil {
-		return err
+		// query param customers
+		var qrCustomers string
+
+		if o.Customers != nil {
+			qrCustomers = *o.Customers
+		}
+		qCustomers := qrCustomers
+		if qCustomers != "" {
+
+			if err := r.SetQueryParam("customers", qCustomers); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param end
-	qrEnd := o.End
-	qEnd := qrEnd
+	if o.End != nil {
 
-	if err := r.SetQueryParam("end", qEnd); err != nil {
-		return err
+		// query param end
+		var qrEnd string
+
+		if o.End != nil {
+			qrEnd = *o.End
+		}
+		qEnd := qrEnd
+		if qEnd != "" {
+
+			if err := r.SetQueryParam("end", qEnd); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param exported
-	qrExported := o.Exported
-	qExported := qrExported
+	if o.Exported != nil {
 
-	if err := r.SetQueryParam("exported", qExported); err != nil {
-		return err
+		// query param exported
+		var qrExported string
+
+		if o.Exported != nil {
+			qrExported = *o.Exported
+		}
+		qExported := qrExported
+		if qExported != "" {
+
+			if err := r.SetQueryParam("exported", qExported); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param full
-	qrFull := o.Full
-	qFull := qrFull
+	if o.Full != nil {
 
-	if err := r.SetQueryParam("full", qFull); err != nil {
-		return err
+		// query param full
+		var qrFull string
+
+		if o.Full != nil {
+			qrFull = *o.Full
+		}
+		qFull := qrFull
+		if qFull != "" {
+
+			if err := r.SetQueryParam("full", qFull); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param modified_after
-	qrModifiedAfter := o.ModifiedAfter
-	qModifiedAfter := qrModifiedAfter
+	if o.ModifiedAfter != nil {
 
-	if err := r.SetQueryParam("modified_after", qModifiedAfter); err != nil {
-		return err
+		// query param modified_after
+		var qrModifiedAfter string
+
+		if o.ModifiedAfter != nil {
+			qrModifiedAfter = *o.ModifiedAfter
+		}
+		qModifiedAfter := qrModifiedAfter
+		if qModifiedAfter != "" {
+
+			if err := r.SetQueryParam("modified_after", qModifiedAfter); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param order
-	qrOrder := o.Order
-	qOrder := qrOrder
+	if o.Order != nil {
 
-	if err := r.SetQueryParam("order", qOrder); err != nil {
-		return err
+		// query param order
+		var qrOrder string
+
+		if o.Order != nil {
+			qrOrder = *o.Order
+		}
+		qOrder := qrOrder
+		if qOrder != "" {
+
+			if err := r.SetQueryParam("order", qOrder); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param orderBy
-	qrOrderBy := o.OrderBy
-	qOrderBy := qrOrderBy
+	if o.OrderBy != nil {
 
-	if err := r.SetQueryParam("orderBy", qOrderBy); err != nil {
-		return err
+		// query param orderBy
+		var qrOrderBy string
+
+		if o.OrderBy != nil {
+			qrOrderBy = *o.OrderBy
+		}
+		qOrderBy := qrOrderBy
+		if qOrderBy != "" {
+
+			if err := r.SetQueryParam("orderBy", qOrderBy); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param page
-	qrPage := o.Page
-	qPage := qrPage
+	if o.Page != nil {
 
-	if err := r.SetQueryParam("page", qPage); err != nil {
-		return err
+		// query param page
+		var qrPage string
+
+		if o.Page != nil {
+			qrPage = *o.Page
+		}
+		qPage := qrPage
+		if qPage != "" {
+
+			if err := r.SetQueryParam("page", qPage); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param project
-	qrProject := o.Project
-	qProject := qrProject
+	if o.Project != nil {
 
-	if err := r.SetQueryParam("project", qProject); err != nil {
-		return err
+		// query param project
+		var qrProject string
+
+		if o.Project != nil {
+			qrProject = *o.Project
+		}
+		qProject := qrProject
+		if qProject != "" {
+
+			if err := r.SetQueryParam("project", qProject); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param projects
-	qrProjects := o.Projects
-	qProjects := qrProjects
+	if o.Projects != nil {
 
-	if err := r.SetQueryParam("projects", qProjects); err != nil {
-		return err
+		// query param projects
+		var qrProjects string
+
+		if o.Projects != nil {
+			qrProjects = *o.Projects
+		}
+		qProjects := qrProjects
+		if qProjects != "" {
+
+			if err := r.SetQueryParam("projects", qProjects); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param size
-	qrSize := o.Size
-	qSize := qrSize
+	if o.Size != nil {
 
-	if err := r.SetQueryParam("size", qSize); err != nil {
-		return err
+		// query param size
+		var qrSize string
+
+		if o.Size != nil {
+			qrSize = *o.Size
+		}
+		qSize := qrSize
+		if qSize != "" {
+
+			if err := r.SetQueryParam("size", qSize); err != nil {
+				return err
+			}
+		}
 	}
 
-	// query param tags
-	qrTags := o.Tags
-	qTags := qrTags
+	if o.Tags != nil {
 
-	if err := r.SetQueryParam("tags", qTags); err != nil {
-		return err
+		// query param tags
+		var qrTags string
+
+		if o.Tags != nil {
+			qrTags = *o.Tags
+		}
+		qTags := qrTags
+		if qTags != "" {
+
+			if err := r.SetQueryParam("tags", qTags); err != nil {
+				return err
+			}
+		}
 	}
 
 	if o.Term != nil {
@@ -629,12 +791,21 @@ func (o *GetAPITimesheetsParams) WriteToRequest(r runtime.ClientRequest, reg str
 		}
 	}
 
-	// query param user
-	qrUser := o.User
-	qUser := qrUser
+	if o.User != nil {
 
-	if err := r.SetQueryParam("user", qUser); err != nil {
-		return err
+		// query param user
+		var qrUser string
+
+		if o.User != nil {
+			qrUser = *o.User
+		}
+		qUser := qrUser
+		if qUser != "" {
+
+			if err := r.SetQueryParam("user", qUser); err != nil {
+				return err
+			}
+		}
 	}
 
 	if len(res) > 0 {
